@@ -28,14 +28,20 @@ repositories {
     mavenCentral()
 }
 
+configurations {
+    compile.exclude module: "spring-boot-starter-tomcat"
+}
 
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-actuator")
     compile("org.springframework.boot:spring-boot-starter-data-elasticsearch")
     compile("org.springframework.boot:spring-boot-starter-thymeleaf")
     compile("org.springframework.boot:spring-boot-starter-web")
+    compile("org.springframework.boot:spring-boot-starter-jetty")
     compile("org.springframework.boot:spring-boot-starter-websocket")
-    testCompile("org.springframework.boot:spring-boot-starter-test") 
+    compile("org.projectlombok:lombok:1.16.4")
+    testCompile("org.springframework.boot:spring-boot-starter-test")
+    testCompile("com.jayway.restassured:rest-assured:2.5.0")
 }
 
 
