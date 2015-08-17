@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class IndexController {
 
     @RequestMapping(method = RequestMethod.GET)
-    public String sayHello() {
-        return "hello";
+    public String index() {
+        return "index";
     }
 }
