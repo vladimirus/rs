@@ -5,7 +5,7 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
     $urlRouterProvider.otherwise("/");
 
     $ocLazyLoadProvider.config({
-        debug: false
+        debug: true
     });
 
     $stateProvider
