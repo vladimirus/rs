@@ -10,9 +10,8 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
 
     $stateProvider
         .state('home', {
-            abstract: true,
             url: "/",
-            templateUrl: "/views/home.html"
+            templateUrl: "home.html"
         })
     ;
 }
