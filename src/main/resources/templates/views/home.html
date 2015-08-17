@@ -1,1 +1,5 @@
-<div ng-controller="SearchController">this is home</div>
+<form role="search" ng-submit="submit()" name="searchForm" ng-controller="SearchController">
+    <div class="form-group">
+        <input type="text" placeholder="search" class="form-control" name="q" id="top-search" ng-model="query"/>
+    </div>
+</form>
