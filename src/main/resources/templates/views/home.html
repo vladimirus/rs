@@ -16,12 +16,9 @@
             </form>
         </div>
     </div>
-
-    <!--c:forEach var="link" items="${links}" varStatus="status">-->
-    <!--<div class="row<c:if test='${status.index == 0}'> spacer</c:if>">-->
-    <!--<div class="col-md-12">-->
-    <!--<p><a href="${link.uri}">${link.text}</a> (${link.rating})</p>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--c:forEach>-->
+    <div ng-repeat="link in links" ng-class="{spacer: $first}" class="row">
+        <div class="col-md-12">
+            <p><a href="{{link.uri}}">{{link.text}}</a></p>
+        </div>
+    </div>
 </div>
