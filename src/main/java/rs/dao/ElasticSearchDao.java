@@ -1,5 +1,6 @@
 package rs.dao;
 
+import static org.elasticsearch.index.query.FilterBuilders.rangeFilter;
 import static org.elasticsearch.index.query.MatchQueryBuilder.Operator.AND;
 import static org.elasticsearch.index.query.MatchQueryBuilder.Type.BOOLEAN;
 import static org.elasticsearch.index.query.QueryBuilders.functionScoreQuery;
@@ -44,6 +45,7 @@ public class ElasticSearchDao implements SearchDao {
                 .withQuery(functionScoreQueryBuilder)
                 .withPageable(new PageRequest(0, 100))
                 .withSort(scoreSort())
+                .withFilter(rangeFilter("score").gt(10))
                 .withIndices("rs")
                 .build();
 
