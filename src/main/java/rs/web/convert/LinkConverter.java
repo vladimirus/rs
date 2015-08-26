@@ -12,6 +12,9 @@ public class LinkConverter implements Converter<Link, LinkUi> {
         return LinkUi.builder()
                 .title(link.getTitle())
                 .url(link.getUrl())
+                .score(link.getScore())
+                .created(link.getCreated())
+                .topic(link.getTopic())
                 .build();
     }
 }
