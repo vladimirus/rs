@@ -18,7 +18,7 @@ import java.util.Date;
 @Getter
 @ToString
 @EqualsAndHashCode
-@Document(indexName = "test")
+@Document(indexName = "test", type = "link")
 public class Link implements Model {
     @NonNull
     private String id;

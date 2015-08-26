@@ -9,6 +9,9 @@ public class LinkConverter implements Converter<Link, LinkUi> {
 
     @Override
     public LinkUi convert(Link link) {
-        return null;
+        return LinkUi.builder()
+                .title(link.getTitle())
+                .url(link.getUrl())
+                .build();
     }
 }
