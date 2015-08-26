@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class Link {
+public class LinkUi {
     private String url;
     private String title;
 }
