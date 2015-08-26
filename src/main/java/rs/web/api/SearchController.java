@@ -17,9 +17,9 @@ public class SearchController {
     @RequestMapping(value = "/{query}", method = RequestMethod.GET)
     public Collection<Link> search(@PathVariable("query") String query) {
         return asList(
-                Link.builder().url("http://google.com").title(query).description("something one").build(),
-                Link.builder().url("http://google.com").title("two").description("something two").build(),
-                Link.builder().url("http://google.com").title("three").description("something three").build()
+                Link.builder().url("http://google.com").title(query).build(),
+                Link.builder().url("http://google.com").title("two").build(),
+                Link.builder().url("http://google.com").title("three").build()
         );
     }
 }

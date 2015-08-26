@@ -8,5 +8,4 @@ import lombok.Getter;
 public class Link {
     private String url;
     private String title;
-    private String description;
 }
