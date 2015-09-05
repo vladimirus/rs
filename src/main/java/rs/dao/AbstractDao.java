@@ -13,9 +13,10 @@ import org.springframework.data.elasticsearch.core.query.SearchQuery;
 
 import java.util.Collection;
 
-public abstract class AbstractModelDao<T> implements ModelDao<T> {
+public abstract class AbstractDao<T> implements ModelDao<T> {
     @Autowired
     private ElasticsearchTemplate template;
+
     public abstract Class<T> modelClass();
 
     @Override
