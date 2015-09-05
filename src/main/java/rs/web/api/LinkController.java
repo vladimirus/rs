@@ -14,11 +14,11 @@ import java.util.Collection;
 @RequestMapping("/api/links")
 public class LinkController {
     @Autowired
-    private ModelManager<Link> modelManager;
+    private ModelManager<Link> linkManager;
 
     @RequestMapping(method = RequestMethod.GET)
     public Collection<Link> list(@RequestParam(value="pageNumber", defaultValue="0") Integer pageNumber,
                                  @RequestParam(value="size", defaultValue="50") Integer size) {
-        return modelManager.get(pageNumber, size);
+        return linkManager.get(pageNumber, size);
     }
 }
