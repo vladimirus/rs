@@ -14,7 +14,7 @@ import rs.model.Topic;
 import java.util.Collection;
 
 @RunWith(MockitoJUnitRunner.class)
-public class TopicManager2Test {
+public class TopicManagerTest {
     @InjectMocks
     private TopicManager topicManager;
     @Mock
