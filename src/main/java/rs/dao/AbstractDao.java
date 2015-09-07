@@ -3,6 +3,7 @@ package rs.dao;
 import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
 import static org.elasticsearch.search.sort.SortBuilders.fieldSort;
 import static org.elasticsearch.search.sort.SortOrder.ASC;
+import static org.elasticsearch.search.sort.SortOrder.DESC;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -21,9 +22,9 @@ public abstract class AbstractDao<T> {
     public Collection<T> get(RsQuery query) {
         SearchQuery searchQuery = new NativeSearchQueryBuilder()
                 .withQuery(matchAllQuery())
-                .withSort(fieldSort("created").order(ASC))
+                .withSort(fieldSort(query.getSortField()).order(query.getSortDesc() ? DESC : ASC))
                 .withPageable(new PageRequest(query.getPageNumber(), query.getSize()))
-                .withIndices("rs")
+                .withIndices(query.getIndex())
                 .withTypes(query.getType())
                 .build();
 
