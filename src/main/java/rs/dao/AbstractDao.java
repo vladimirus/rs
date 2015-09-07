@@ -13,23 +13,21 @@ import org.springframework.data.elasticsearch.core.query.SearchQuery;
 
 import java.util.Collection;
 
-public abstract class AbstractDao<T> implements ModelDao<T> {
+public abstract class AbstractDao<T> {
     @Autowired
     private ElasticsearchTemplate template;
 
-    public abstract Class<T> modelClass();
-
-    @Override
-    public Collection<T> get(int pageNumber, int size) {
+    @SuppressWarnings("unchecked")
+    public Collection<T> get(RsQuery query) {
         SearchQuery searchQuery = new NativeSearchQueryBuilder()
                 .withQuery(matchAllQuery())
                 .withSort(fieldSort("created").order(ASC))
-                .withPageable(new PageRequest(pageNumber, size))
+                .withPageable(new PageRequest(query.getPageNumber(), query.getSize()))
                 .withIndices("rs")
-                .withTypes("link")
+                .withTypes(query.getType())
                 .build();
 
-        FacetedPage<T> page = template.queryForPage(searchQuery, modelClass());
+        FacetedPage<T> page = template.queryForPage(searchQuery, query.getClazz());
         return page.getContent();
     }
 }
