@@ -1,6 +1,7 @@
 package rs;
 
 import rs.model.Link;
+import rs.model.Topic;
 
 import java.util.Date;
 
@@ -25,6 +26,20 @@ public class TestFactory {
                 .self(false)
                 .nsfw(false)
                 .hidden(false)
+                .build();
+    }
+
+    public static Topic aTopic(String id) {
+        return Topic.builder()
+                .id(id)
+                .displayName(id)
+                .title("title")
+                .created(new Date())
+                .updated(new Date())
+                .nsfw(false)
+                .subscribers(1L)
+                .description("this is description")
+                .type("public")
                 .build();
     }
 }
