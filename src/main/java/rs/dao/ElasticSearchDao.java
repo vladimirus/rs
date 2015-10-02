@@ -43,7 +43,7 @@ public class ElasticSearchDao implements SearchDao {
 
         SearchQuery searchQuery = new NativeSearchQueryBuilder()
                 .withQuery(functionScoreQueryBuilder)
-                .withPageable(new PageRequest(0, 50))
+                .withPageable(new PageRequest(0, 10))
                 .withSort(scoreSort())
                 .withFilter(rangeFilter("score").gt(10))
                 .withIndices("rs")

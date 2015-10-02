@@ -1,5 +1,6 @@
 package rs;
 
+import rs.model.Comment;
 import rs.model.Link;
 import rs.model.Topic;
 
@@ -40,6 +41,21 @@ public class TestFactory {
                 .subscribers(1L)
                 .description("this is description")
                 .type("public")
+                .build();
+    }
+
+    public static Comment aComment(String id) {
+        return Comment.builder()
+                .id(id)
+                .author("author")
+                .parentId("parentId")
+                .topic("funny")
+                .topicId("funnyId")
+                .linkId("linkId")
+                .bodyHTML("<p>test</p>")
+                .body("test")
+                .created(new Date())
+                .score(1L)
                 .build();
     }
 }

@@ -18,7 +18,7 @@ public class LinkController {
 
     @RequestMapping(method = RequestMethod.GET)
     public Collection<Link> list(@RequestParam(value="pageNumber", defaultValue="0") Integer pageNumber,
-                                 @RequestParam(value="size", defaultValue="50") Integer size) {
+                                 @RequestParam(value="size", defaultValue="10") Integer size) {
         return linkManager.get(pageNumber, size);
     }
 }

@@ -4,38 +4,37 @@ import static java.util.Collections.singletonList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.verify;
-import static rs.TestFactory.aLink;
+import static rs.TestFactory.aComment;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import rs.model.Link;
-import rs.service.SearchManager;
+import rs.model.Comment;
+import rs.service.CommentManager;
 
 import java.util.Collection;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SearchControllerTest {
+public class CommentControllerTest {
     @InjectMocks
-    private SearchController searchController;
+    private CommentController commentController;
     @Mock
-    private SearchManager searchManager;
+    private CommentManager commentManager;
 
     @Test
-    public void shouldSearch()  {
+    public void shouldList()  {
         // given
-        Link link = aLink("id");
-        given(searchManager.search("test")).willReturn(singletonList(link));
+        given(commentManager.get(anyInt(), anyInt())).willReturn(singletonList(aComment("id")));
 
         // when
-        Collection<Link> actual = searchController.search("test");
+        Collection<Comment> actual = commentController.list(0, 50);
 
         // then
         assertThat(actual, hasSize(1));
-        verify(searchManager).search(anyString());
+        verify(commentManager).get(0, 50);
     }
 }

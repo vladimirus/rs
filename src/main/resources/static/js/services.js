@@ -4,6 +4,13 @@ function SearchFactory($resource) {
     });
 }
 
+function CommentFactory($resource) {
+    return $resource('/api/comments/linkid/:query', {
+        get: '@query'
+    });
+}
+
 angular
     .module('rs')
-    .factory('Search', SearchFactory);
+    .factory('Search', SearchFactory)
+    .factory('Comment', CommentFactory);

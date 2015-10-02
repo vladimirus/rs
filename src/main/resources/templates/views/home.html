@@ -1,6 +1,6 @@
 <div class="container" ng-controller="SearchController">
     <div class="row">
-        <h1 class="text-center">reddit searcher</h1>
+        <h1 class="text-center">{{appName}}</h1>
     </div>
     <div class="row">
         <div class="col-md-12">
@@ -18,7 +18,11 @@
     </div>
     <div ng-repeat="link in links" ng-class="{spacer: $first}" class="row">
         <div class="col-md-12">
-            <p><a href="{{link.url}}">{{link.title}}</a></p>
+            <div class="link">
+                <p class="title"><a href="{{link.url}}">{{link.title}}</a></p>
+                <p class="url">{{link.url}}</p>
+                <p class="comment"><a href="http://reddit.com{{link.commentsUrl}}" top-comment="{{link.id}}"></a></p>
+            </div>
         </div>
     </div>
 </div>
