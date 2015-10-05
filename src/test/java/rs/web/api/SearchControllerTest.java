@@ -5,6 +5,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static rs.TestFactory.aLink;
 
@@ -29,13 +30,13 @@ public class SearchControllerTest {
     public void shouldSearch()  {
         // given
         Link link = aLink("id");
-        given(searchManager.search("test")).willReturn(singletonList(link));
+        given(searchManager.search("test", 0)).willReturn(singletonList(link));
 
         // when
-        Collection<Link> actual = searchController.search("test");
+        Collection<Link> actual = searchController.search("test", 0);
 
         // then
         assertThat(actual, hasSize(1));
-        verify(searchManager).search(anyString());
+        verify(searchManager).search(anyString(), eq(0));
     }
 }

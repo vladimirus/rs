@@ -13,7 +13,7 @@ public class ElasticSearchManager implements SearchManager {
     private SearchDao searchDao;
 
     @Override
-    public Collection<Link> search(String query) {
-        return searchDao.search(query);
+    public Collection<Link> search(String query, Integer pageNo) {
+        return searchDao.search(query, 0);
     }
 }

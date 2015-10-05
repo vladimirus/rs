@@ -29,7 +29,7 @@ public class ElasticSearchDao implements SearchDao {
     private ElasticsearchTemplate elasticsearchTemplate;
 
     @Override
-    public Collection<Link> search(String query) {
+    public Collection<Link> search(String query, Integer pageNo) {
 //        String scriptRecency = "_score * ((0.08 / ((3.16*pow(10,-11)) * abs(currentTimeInMillis - doc['created'].date.getMillis()) + 0.05)) + 1.0)";
         String scriptRating = "_score * doc['score'].value";
 
@@ -43,14 +43,13 @@ public class ElasticSearchDao implements SearchDao {
 
         SearchQuery searchQuery = new NativeSearchQueryBuilder()
                 .withQuery(functionScoreQueryBuilder)
-                .withPageable(new PageRequest(0, 10))
+                .withPageable(new PageRequest(pageNo, 10))
                 .withSort(scoreSort())
                 .withFilter(rangeFilter("score").gt(10))
                 .withIndices("rs")
                 .build();
 
         Page<Link> links = elasticsearchTemplate.queryForPage(searchQuery, Link.class);
-
         return links.getContent();
     }
 }
