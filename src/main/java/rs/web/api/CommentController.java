@@ -11,6 +11,7 @@ import rs.model.Comment;
 import rs.service.CommentManager;
 
 import java.util.Collection;
+import java.util.Date;
 
 @RestController
 @RequestMapping("/api/comments")
@@ -26,6 +27,21 @@ public class CommentController {
 
     @RequestMapping(value = "/linkid/{linkid}", method = GET)
     public Comment getTopByLinkId(@PathVariable("linkid") String linkId) {
-        return commentManager.getTopComment(linkId).orElseThrow(() -> new RuntimeException("not found"));
+        return commentManager.getTopComment(linkId).orElse(defaultComment());
+    }
+
+    private Comment defaultComment() {
+        return Comment.builder()
+                .id("")
+                .author("")
+                .parentId("")
+                .topic("")
+                .topicId("")
+                .linkId("")
+                .bodyHTML("comments")
+                .body("comments")
+                .created(new Date())
+                .score(1L)
+                .build();
     }
 }

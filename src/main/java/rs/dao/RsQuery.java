@@ -3,10 +3,13 @@ package rs.dao;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
+import org.elasticsearch.index.query.QueryBuilder;
 
 @Builder
 @Getter
 public class RsQuery {
+    @NonNull
+    QueryBuilder queryBuilder;
     @NonNull
     private Integer pageNumber;
     @NonNull
