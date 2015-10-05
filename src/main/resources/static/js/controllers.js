@@ -21,6 +21,16 @@ function SearchController($scope, $stateParams, Search, $location) {
 
     function parseResponse(reponse, $scope) {
         reponse.$promise.then(function(data) {
+
+            var links = data.links;
+            for (i = 0; i < links.length; i++) {
+                if (links[i].url.length > 35) {
+                    links[i].shortUrl = links[i].url.substring(0, 32) + "...";
+                } else {
+                    links[i].shortUrl = links[i].url;
+                }
+            }
+
             $scope.links = data.links;
 
             $scope.maxSize = 5;
