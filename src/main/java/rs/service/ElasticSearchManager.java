@@ -12,6 +12,6 @@ public class ElasticSearchManager implements SearchManager {
 
     @Override
     public SearchResponse search(String query, Integer pageNo) {
-        return searchDao.search(query, 0);
+        return searchDao.search(query, pageNo);
     }
 }

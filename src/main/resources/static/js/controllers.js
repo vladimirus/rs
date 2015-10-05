@@ -23,6 +23,7 @@ function SearchController($scope, $stateParams, Search, $location) {
 
     function executeSearch(query, pageNo) {
         $location.search('q', query);
+        $location.search('p', pageNo);
         Pace.restart();
         return searchRs(query, pageNo);
     }
