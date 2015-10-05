@@ -1,5 +1,6 @@
 package rs.service;
 
+import static java.util.Arrays.asList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.BDDMockito.given;
@@ -14,10 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import rs.dao.SearchDao;
-import rs.model.Link;
-
-import java.util.Arrays;
-import java.util.Collection;
+import rs.model.SearchResponse;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ElasticSearchManagerTest {
@@ -29,13 +27,14 @@ public class ElasticSearchManagerTest {
     @Test
     public void shouldSearch() {
         // given
-        given(searchDao.search("test", 0)).willReturn(Arrays.asList(aLink("1"), aLink("2")));
+        SearchResponse response = SearchResponse.builder().totalPages(1).links(asList(aLink("1"), aLink("2"))).build();
+        given(searchDao.search("test", 0)).willReturn(response);
 
         // when
-        Collection<Link> actual = elasticSearchManager.search("test", 0);
+        SearchResponse actual = elasticSearchManager.search("test", 0);
 
         // then
-        assertThat(actual, hasSize(2));
+        assertThat(actual.getLinks(), hasSize(2));
         verify(searchDao).search(anyString(), eq(0));
     }
 

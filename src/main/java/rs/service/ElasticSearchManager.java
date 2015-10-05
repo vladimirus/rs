@@ -3,9 +3,7 @@ package rs.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import rs.dao.SearchDao;
-import rs.model.Link;
-
-import java.util.Collection;
+import rs.model.SearchResponse;
 
 @Service
 public class ElasticSearchManager implements SearchManager {
@@ -13,7 +11,7 @@ public class ElasticSearchManager implements SearchManager {
     private SearchDao searchDao;
 
     @Override
-    public Collection<Link> search(String query, Integer pageNo) {
+    public SearchResponse search(String query, Integer pageNo) {
         return searchDao.search(query, 0);
     }
 }

@@ -17,8 +17,8 @@ import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilde
 import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.stereotype.Repository;
 import rs.model.Link;
+import rs.model.SearchResponse;
 
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,7 +29,7 @@ public class ElasticSearchDao implements SearchDao {
     private ElasticsearchTemplate elasticsearchTemplate;
 
     @Override
-    public Collection<Link> search(String query, Integer pageNo) {
+    public SearchResponse search(String query, Integer pageNo) {
 //        String scriptRecency = "_score * ((0.08 / ((3.16*pow(10,-11)) * abs(currentTimeInMillis - doc['created'].date.getMillis()) + 0.05)) + 1.0)";
         String scriptRating = "_score * doc['score'].value";
 
@@ -50,6 +50,9 @@ public class ElasticSearchDao implements SearchDao {
                 .build();
 
         Page<Link> links = elasticsearchTemplate.queryForPage(searchQuery, Link.class);
-        return links.getContent();
+
+        return SearchResponse.builder().links(links.getContent())
+                .totalPages(links.getTotalPages())
+                .build();
     }
 }

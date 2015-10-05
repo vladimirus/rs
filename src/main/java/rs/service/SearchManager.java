@@ -1,9 +1,7 @@
 package rs.service;
 
-import rs.model.Link;
-
-import java.util.Collection;
+import rs.model.SearchResponse;
 
 public interface SearchManager {
-    Collection<Link> search(String query, Integer pageNo);
+    SearchResponse search(String query, Integer pageNo);
 }

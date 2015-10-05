@@ -15,9 +15,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import rs.model.Link;
+import rs.model.SearchResponse;
 import rs.service.SearchManager;
-
-import java.util.Collection;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SearchControllerTest {
@@ -30,13 +29,15 @@ public class SearchControllerTest {
     public void shouldSearch()  {
         // given
         Link link = aLink("id");
-        given(searchManager.search("test", 0)).willReturn(singletonList(link));
+        SearchResponse response = SearchResponse.builder().totalPages(1).links(singletonList(link)).build();
+
+        given(searchManager.search("test", 0)).willReturn(response);
 
         // when
-        Collection<Link> actual = searchController.search("test", 0);
+        SearchResponse actual = searchController.search("test", 0);
 
         // then
-        assertThat(actual, hasSize(1));
+        assertThat(actual.getLinks(), hasSize(1));
         verify(searchManager).search(anyString(), eq(0));
     }
 }

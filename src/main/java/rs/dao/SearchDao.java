@@ -1,9 +1,7 @@
 package rs.dao;
 
-import rs.model.Link;
-
-import java.util.Collection;
+import rs.model.SearchResponse;
 
 public interface SearchDao {
-    Collection<Link> search(String query, Integer pageNo);
+    SearchResponse search(String query, Integer pageNo);
 }
