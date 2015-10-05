@@ -30,11 +30,10 @@ public class SearchControllerTest {
         // given
         Link link = aLink("id");
         SearchResponse response = SearchResponse.builder().totalPages(1).links(singletonList(link)).build();
-
         given(searchManager.search("test", 0)).willReturn(response);
 
         // when
-        SearchResponse actual = searchController.search("test", 0);
+        SearchResponse actual = searchController.search("test", 1);
 
         // then
         assertThat(actual.getLinks(), hasSize(1));
