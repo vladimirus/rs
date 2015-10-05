@@ -14,6 +14,8 @@ import java.util.Collection;
 @ToString
 @EqualsAndHashCode
 public class SearchResponse {
+    private Long totalElements;
+    private Integer currentPage;
     private Integer totalPages;
     private Collection<Link> links;
 }

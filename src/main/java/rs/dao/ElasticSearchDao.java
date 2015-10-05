@@ -49,10 +49,11 @@ public class ElasticSearchDao implements SearchDao {
                 .withIndices("rs")
                 .build();
 
-        Page<Link> links = elasticsearchTemplate.queryForPage(searchQuery, Link.class);
-
-        return SearchResponse.builder().links(links.getContent())
-                .totalPages(links.getTotalPages())
+        Page<Link> page = elasticsearchTemplate.queryForPage(searchQuery, Link.class);
+        return SearchResponse.builder().links(page.getContent())
+                .totalElements(page.getTotalElements())
+                .currentPage(page.getNumber())
+                .totalPages(page.getTotalPages())
                 .build();
     }
 }
