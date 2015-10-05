@@ -21,7 +21,7 @@ public class SearchController {
 
     @RequestMapping(value = "/{query}", method = RequestMethod.GET)
     public Collection<Link> search(@PathVariable("query") String query,
-                                   @RequestParam(value="pageNumber", defaultValue="0") Integer pageNumber) {
+                                   @RequestParam(value="p", defaultValue="0") Integer pageNumber) {
         return searchManager.search(query, pageNumber).stream()
                 .collect(toList());
     }

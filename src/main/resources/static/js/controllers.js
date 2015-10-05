@@ -6,23 +6,23 @@ function SearchController($scope, $stateParams, Search, $location) {
     }
 
     if ($scope.query) {
-        $scope.links = executeSearch($scope.query);
+        $scope.links = executeSearch($scope.query, 0);
     }
 
     $scope.submit = function () {
         if ($scope.query) {
-            $scope.links = executeSearch($scope.query);
+            $scope.links = executeSearch($scope.query, 0);
         }
     };
 
-    function executeSearch(query) {
+    function executeSearch(query, pageNo) {
         $location.search('q', query);
         Pace.restart();
-        return searchRs(query);
+        return searchRs(query, pageNo);
     }
 
-    function searchRs(query) {
-        return Search.query({query: query});
+    function searchRs(query, pageNo) {
+        return Search.query({query: query, pageNo: pageNo});
     }
 }
 

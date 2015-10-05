@@ -1,6 +1,7 @@
 function SearchFactory($resource) {
-    return $resource('/api/search/:query', {
-        query: '@query'
+    return $resource('/api/search/:query?p=:pageNo', {
+        query: '@query',
+        pageNo: '@pageNo'
     });
 }
 
