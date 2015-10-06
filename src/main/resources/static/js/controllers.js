@@ -24,8 +24,8 @@ function SearchController($scope, $stateParams, Search, $location) {
 
             var links = data.links;
             for (i = 0; i < links.length; i++) {
-                if (links[i].url.length > 35) {
-                    links[i].shortUrl = links[i].url.substring(0, 32) + "...";
+                if (links[i].url.length > 33) {
+                    links[i].shortUrl = links[i].url.substring(0, 30) + "...";
                 } else {
                     links[i].shortUrl = links[i].url;
                 }
