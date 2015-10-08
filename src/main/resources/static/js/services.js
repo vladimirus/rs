@@ -11,7 +11,15 @@ function CommentFactory($resource) {
     });
 }
 
+function SuggestFactory($resource) {
+    return $resource('/api/suggest/:query', {
+        query: '@query'
+    });
+}
+
+
 angular
     .module('rs')
     .factory('Search', SearchFactory)
-    .factory('Comment', CommentFactory);
+    .factory('Comment', CommentFactory)
+    .factory('Suggest', SuggestFactory);

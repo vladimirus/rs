@@ -4,11 +4,12 @@
             <h1 class="text-center">{{appName}}</h1>
         </div>
     </div>
+
     <div class="row">
         <div class="col-xs-10 col-md-12">
             <form role="form" name="searchForm" method="get" ng-submit="submit()">
                 <div class="input-group">
-                    <input name="q" class="form-control" ng-model="query" placeholder="search"/>
+                    <input name="q" class="form-control" autocomplete="off" ng-model="query" placeholder="search" typeahead="suggest for suggest in getSuggestions($viewValue)" typeahead-select-on-exact="true"/>
 				      <span class="input-group-btn">
 				        <button class="btn btn-info" type="submit">
                             <i class="glyphicon glyphicon-search"></i>

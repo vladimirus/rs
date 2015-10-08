@@ -1,4 +1,4 @@
-function SearchController($scope, $stateParams, Search, $location) {
+function SearchController($scope, $stateParams, Search, Suggest, $location) {
     $scope.appName = "reddit searcher";
 
     if (!$scope.query) {
@@ -19,19 +19,15 @@ function SearchController($scope, $stateParams, Search, $location) {
         parseResponse(executeSearch($scope.query, $scope.currentPage), $scope);
     };
 
+    $scope.getSuggestions = function(query) {
+        return Suggest.query({query: query}).$promise.then(function(data) {
+            return data;
+        });
+    };
+
     function parseResponse(reponse, $scope) {
         reponse.$promise.then(function(data) {
-
-            var links = data.links;
-            for (i = 0; i < links.length; i++) {
-                if (links[i].url.length > 33) {
-                    links[i].shortUrl = links[i].url.substring(0, 30) + "...";
-                } else {
-                    links[i].shortUrl = links[i].url;
-                }
-            }
-
-            $scope.links = data.links;
+            $scope.links = getLinks(data);
 
             $scope.maxSize = 5;
             $scope.itemsPerPage = 10;
@@ -39,6 +35,18 @@ function SearchController($scope, $stateParams, Search, $location) {
             $scope.totalItems = data.totalElements;
             $scope.currentPage = data.currentPage + 1;
         });
+    }
+
+    function getLinks(data) {
+        var links = data.links;
+        for (i = 0; i < links.length; i++) {
+            if (links[i].url.length > 33) {
+                links[i].shortUrl = links[i].url.substring(0, 30) + "...";
+            } else {
+                links[i].shortUrl = links[i].url;
+            }
+        }
+        return links;
     }
 
     function executeSearch(query, pageNo) {
