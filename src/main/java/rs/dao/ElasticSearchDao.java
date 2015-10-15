@@ -24,6 +24,9 @@ import rs.model.CompletionEntity;
 import rs.model.Link;
 import rs.model.SearchResponse;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Repository
 public class ElasticSearchDao implements SearchDao {
     @Autowired
@@ -31,15 +34,15 @@ public class ElasticSearchDao implements SearchDao {
 
     @Override
     public SearchResponse search(String query, Integer pageNo) {
-//        String scriptRecency = "_score * ((0.08 / ((3.16*pow(10,-11)) * abs(currentTimeInMillis - doc['created'].date.getMillis()) + 0.05)) + 1.0)";
+        String scriptRecency = "_score * ((0.08 / ((3.16*pow(10,-11)) * abs(currentTimeInMillis - doc['created'].date.getMillis()) + 0.05)) + 1.0)";
         String scriptRating = "_score * doc['score'].value";
 
-//        Map<String, Object> params = new HashMap<>();
-//        params.put("currentTimeInMillis", new Date().getTime());
+        Map<String, Object> params = new HashMap<>();
+        params.put("currentTimeInMillis", System.currentTimeMillis());
 
         FunctionScoreQueryBuilder functionScoreQueryBuilder =
                 functionScoreQuery(matchQuery("title", query).type(BOOLEAN).operator(AND))
-//                        .add(scriptFunction(scriptRecency, params))
+                        .add(scriptFunction(scriptRecency, params))
                         .add(scriptFunction(scriptRating));
 
         SearchQuery searchQuery = new NativeSearchQueryBuilder()
