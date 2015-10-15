@@ -5,9 +5,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
-import static rs.TestFactory.aLink;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,7 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import rs.dao.SearchDao;
-import rs.model.SearchResponse;
+import rs.model.SuggestResponse;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ElasticSearchManagerTest {
@@ -25,17 +23,17 @@ public class ElasticSearchManagerTest {
     private SearchDao searchDao;
 
     @Test
-    public void shouldSearch() {
+    public void shouldSuggest() {
         // given
-        SearchResponse response = SearchResponse.builder().totalPages(1).links(asList(aLink("1"), aLink("2"))).build();
-        given(searchDao.search("test", 0)).willReturn(response);
+        SuggestResponse response = SuggestResponse.builder().suggestions(asList("1", "2")).build();
+        given(searchDao.suggest("test")).willReturn(response);
 
         // when
-        SearchResponse actual = elasticSearchManager.search("test", 0);
+        SuggestResponse actual = elasticSearchManager.suggest("test");
 
         // then
-        assertThat(actual.getLinks(), hasSize(2));
-        verify(searchDao).search(anyString(), eq(0));
+        assertThat(actual.getSuggestions(), hasSize(2));
+        verify(searchDao).suggest(anyString());
     }
 
 }
