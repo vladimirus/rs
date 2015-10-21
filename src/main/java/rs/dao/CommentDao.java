@@ -4,6 +4,7 @@ import static java.util.Optional.empty;
 import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
 import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 import rs.model.Comment;
 
@@ -12,13 +13,16 @@ import java.util.Optional;
 
 @Repository
 public class CommentDao extends AbstractDao<Comment> implements ModelDao<Comment> {
+    @Value("${rs.index.name:rs}")
+    String indexName;
+
     @Override
     public Collection<Comment> get(int pageNumber, int size) {
         return get(RsQuery.builder()
                 .queryBuilder(matchAllQuery())
                 .clazz(Comment.class)
                 .type("comment")
-                .index("rs")
+                .index(indexName)
                 .sortDesc(true)
                 .sortField("score")
                 .pageNumber(pageNumber)

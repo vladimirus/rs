@@ -6,6 +6,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -26,6 +27,11 @@ public class TopicDaoTest {
     private TopicDao topicDao;
     @Mock
     private ElasticsearchTemplate elasticsearchTemplate;
+
+    @Before
+    public void setup() {
+        topicDao.indexName = "rs";
+    }
 
     @SuppressWarnings("unchecked")
     @Test

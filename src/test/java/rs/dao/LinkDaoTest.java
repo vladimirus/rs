@@ -7,6 +7,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static rs.TestFactory.aLink;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -26,6 +27,11 @@ public class LinkDaoTest {
     private LinkDao linkDao;
     @Mock
     private ElasticsearchTemplate elasticsearchTemplate;
+
+    @Before
+    public void setup() {
+        linkDao.indexName = "rs";
+    }
 
     @SuppressWarnings("unchecked")
     @Test

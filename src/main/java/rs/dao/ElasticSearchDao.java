@@ -14,13 +14,13 @@ import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
 import org.elasticsearch.search.suggest.completion.CompletionSuggestion;
 import org.elasticsearch.search.suggest.completion.CompletionSuggestionBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.stereotype.Repository;
-import rs.model.CompletionEntity;
 import rs.model.Link;
 import rs.model.SearchResponse;
 
@@ -29,6 +29,9 @@ import java.util.Map;
 
 @Repository
 public class ElasticSearchDao implements SearchDao {
+    @Value("${rs.index.name:rs}")
+    String indexName;
+
     @Autowired
     private ElasticsearchTemplate elasticsearchTemplate;
 
@@ -50,7 +53,7 @@ public class ElasticSearchDao implements SearchDao {
                 .withPageable(new PageRequest(pageNo, 10))
                 .withSort(scoreSort())
                 .withFilter(rangeFilter("score").gt(10))
-                .withIndices("rs")
+                .withIndices(indexName)
                 .build();
 
         Page<Link> page = elasticsearchTemplate.queryForPage(searchQuery, Link.class);
@@ -69,7 +72,7 @@ public class ElasticSearchDao implements SearchDao {
                 .field("suggest")
                 .size(4);
 
-        SuggestResponse suggestResponse = elasticsearchTemplate.suggest(completionSuggestionBuilder, CompletionEntity.class);
+        SuggestResponse suggestResponse = elasticsearchTemplate.suggest(completionSuggestionBuilder, indexName);
         CompletionSuggestion completionSuggestion = suggestResponse.getSuggest().getSuggestion("suggestion");
 
         return rs.model.SuggestResponse.builder().suggestions(

@@ -10,6 +10,7 @@ import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.mock;
 import static rs.TestFactory.aLink;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -29,6 +30,11 @@ public class CommentDaoTest {
     private CommentDao commentDao;
     @Mock
     private ElasticsearchTemplate elasticsearchTemplate;
+
+    @Before
+    public void setup() {
+        commentDao.indexName = "rs";
+    }
 
     @SuppressWarnings("unchecked")
     @Test
