@@ -45,6 +45,12 @@ function SearchController($scope, $stateParams, Search, Suggest, $location) {
             } else {
                 links[i].shortUrl = links[i].url;
             }
+
+            if (links[i].comments !== null) {
+                links[i].topComment = links[i].comments[0].body;
+            } else {
+                links[i].topComment = "comments"
+            }
         }
         return links;
     }

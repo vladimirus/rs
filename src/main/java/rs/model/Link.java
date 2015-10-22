@@ -10,6 +10,8 @@ import lombok.NonNull;
 import lombok.ToString;
 import org.springframework.data.elasticsearch.annotations.Document;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 
 @NoArgsConstructor //this needed for ES
@@ -51,4 +53,6 @@ public class Link implements Model {
     private String selfText;
     private String selfTextHtml;
     private String domain;
+
+    private Collection<Comment> comments = new ArrayList<>();
 }
