@@ -37,7 +37,7 @@ public class CommentDao extends AbstractDao<Comment> implements ModelDao<Comment
                 .queryBuilder(matchQuery("linkId", linkId))
                 .clazz(Comment.class)
                 .type("comment")
-                .index("rs")
+                .index(indexName)
                 .sortDesc(true)
                 .sortField("score")
                 .pageNumber(0)
