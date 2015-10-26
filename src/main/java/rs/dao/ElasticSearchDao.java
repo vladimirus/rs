@@ -1,15 +1,14 @@
 package rs.dao;
 
 import static java.util.stream.Collectors.toList;
+import static org.elasticsearch.index.query.CommonTermsQueryBuilder.Operator.AND;
 import static org.elasticsearch.index.query.FilterBuilders.rangeFilter;
-import static org.elasticsearch.index.query.MatchQueryBuilder.Operator.AND;
-import static org.elasticsearch.index.query.MatchQueryBuilder.Type.BOOLEAN;
 import static org.elasticsearch.index.query.QueryBuilders.functionScoreQuery;
-import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
 import static org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders.scriptFunction;
 import static org.elasticsearch.search.sort.SortBuilders.scoreSort;
 
 import org.elasticsearch.action.suggest.SuggestResponse;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
 import org.elasticsearch.search.suggest.completion.CompletionSuggestion;
 import org.elasticsearch.search.suggest.completion.CompletionSuggestionBuilder;
@@ -44,9 +43,16 @@ public class ElasticSearchDao implements SearchDao {
         params.put("currentTimeInMillis", System.currentTimeMillis());
 
         FunctionScoreQueryBuilder functionScoreQueryBuilder =
-                functionScoreQuery(matchQuery("title", query).type(BOOLEAN).operator(AND))
+                functionScoreQuery(QueryBuilders.commonTermsQuery("title", query)
+                        .cutoffFrequency(0.2f).highFreqOperator(AND)
+                        .highFreqMinimumShouldMatch("3<80%")
+                        .lowFreqMinimumShouldMatch("50%"))
                         .add(scriptFunction(scriptRecency, params))
                         .add(scriptFunction(scriptRating));
+
+//                functionScoreQuery(QueryBuilders.matchQuery("title", query).type(Type.BOOLEAN).operator(Operator.AND).analyzer("standard"))
+//                        .add(scriptFunction(scriptRecency, params))
+//                        .add(scriptFunction(scriptRating));
 
         SearchQuery searchQuery = new NativeSearchQueryBuilder()
                 .withQuery(functionScoreQueryBuilder)
