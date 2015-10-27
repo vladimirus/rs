@@ -45,8 +45,8 @@ public class ElasticSearchDao implements SearchDao {
         FunctionScoreQueryBuilder functionScoreQueryBuilder =
                 functionScoreQuery(QueryBuilders.commonTermsQuery("title", query)
                         .cutoffFrequency(0.2f).highFreqOperator(AND)
-                        .highFreqMinimumShouldMatch("3<80%")
-                        .lowFreqMinimumShouldMatch("50%"))
+                        .highFreqMinimumShouldMatch("20%")
+                        .lowFreqMinimumShouldMatch("3<80%"))
                         .add(scriptFunction(scriptRecency, params))
                         .add(scriptFunction(scriptRating));
 
