@@ -2,12 +2,14 @@ package rs.dao;
 
 import static java.util.stream.Collectors.toList;
 import static org.elasticsearch.index.query.CommonTermsQueryBuilder.Operator.AND;
-import static org.elasticsearch.index.query.FilterBuilders.rangeFilter;
+import static org.elasticsearch.index.query.FilterBuilders.orFilter;
+import static org.elasticsearch.index.query.FilterBuilders.termFilter;
 import static org.elasticsearch.index.query.QueryBuilders.functionScoreQuery;
 import static org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders.scriptFunction;
 import static org.elasticsearch.search.sort.SortBuilders.scoreSort;
 
 import org.elasticsearch.action.suggest.SuggestResponse;
+import org.elasticsearch.index.query.FilterBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
 import org.elasticsearch.search.suggest.completion.CompletionSuggestion;
@@ -18,7 +20,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
-import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.stereotype.Repository;
 import rs.model.Link;
 import rs.model.SearchRequest;
@@ -55,15 +56,23 @@ public class ElasticSearchDao implements SearchDao {
 //                        .add(scriptFunction(scriptRecency, params))
 //                        .add(scriptFunction(scriptRating));
 
-        SearchQuery searchQuery = new NativeSearchQueryBuilder()
+        NativeSearchQueryBuilder searchQuery = new NativeSearchQueryBuilder()
                 .withQuery(functionScoreQueryBuilder)
                 .withPageable(new PageRequest(request.getPageNo(), 10))
                 .withSort(scoreSort())
-                .withFilter(rangeFilter("score").gt(10))
-                .withIndices(indexName)
-                .build();
+                .withIndices(indexName);
 
-        Page<Link> page = elasticsearchTemplate.queryForPage(searchQuery, Link.class);
+        if (request.getTopics() != null && !request.getTopics().isEmpty()) {
+
+            FilterBuilder[] filters = request.getTopics().stream()
+                    .map(text -> termFilter("topic", text))
+                    .collect(toList()).toArray(new FilterBuilder[request.getTopics().size()]);
+
+            FilterBuilder filter = orFilter(filters);
+            searchQuery.withFilter(filter);
+        }
+
+        Page<Link> page = elasticsearchTemplate.queryForPage(searchQuery.build(), Link.class);
         return SearchResponse.builder().links(page.getContent())
                 .totalElements(page.getTotalElements())
                 .currentPage(page.getNumber())
