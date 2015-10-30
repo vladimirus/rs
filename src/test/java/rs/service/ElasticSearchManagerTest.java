@@ -4,6 +4,7 @@ import static java.util.Arrays.asList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.verify;
 
@@ -13,6 +14,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import rs.dao.SearchDao;
+import rs.model.SearchRequest;
+import rs.model.SearchResponse;
 import rs.model.SuggestResponse;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -21,6 +24,16 @@ public class ElasticSearchManagerTest {
     private ElasticSearchManager elasticSearchManager;
     @Mock
     private SearchDao searchDao;
+
+    @Test
+    public void shouldSearch() {
+
+        // when
+        SearchResponse actual = elasticSearchManager.search("test", 0);
+
+        // then
+        verify(searchDao).search(any(SearchRequest.class));
+    }
 
     @Test
     public void shouldSuggest() {

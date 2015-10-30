@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import rs.dao.SearchDao;
 import rs.model.Link;
+import rs.model.SearchRequest;
 import rs.model.SearchResponse;
 import rs.model.SuggestResponse;
 
@@ -20,7 +21,10 @@ public class ElasticSearchManager implements SearchManager {
 
     @Override
     public SearchResponse search(String query, Integer pageNo) {
-        return searchDao.search(query, pageNo);
+        return searchDao.search(SearchRequest.builder()
+                .query(query)
+                .pageNo(pageNo)
+                .build());
     }
 
     @Override
@@ -32,7 +36,11 @@ public class ElasticSearchManager implements SearchManager {
         if (query.length() > 2) {
             String twoLastChars = query.substring(query.length() - 2);
             if (twoLastChars.startsWith(" ")) {
-                return SuggestResponse.builder().suggestions(searchDao.search(query.substring(0, query.length() - 1), 0).getLinks().stream()
+                return SuggestResponse.builder().suggestions(searchDao.search(
+                        SearchRequest.builder()
+                        .query(query.substring(0, query.length() - 1))
+                        .pageNo(0)
+                        .build()).getLinks().stream()
                         .limit(4)
                         .map(Link::getTitle)
                         .collect(toList())).build();

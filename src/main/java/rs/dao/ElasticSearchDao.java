@@ -21,6 +21,7 @@ import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilde
 import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.stereotype.Repository;
 import rs.model.Link;
+import rs.model.SearchRequest;
 import rs.model.SearchResponse;
 
 import java.util.HashMap;
@@ -35,7 +36,7 @@ public class ElasticSearchDao implements SearchDao {
     private ElasticsearchTemplate elasticsearchTemplate;
 
     @Override
-    public SearchResponse search(String query, Integer pageNo) {
+    public SearchResponse search(SearchRequest request) {
         String scriptRecency = "_score * ((0.08 / ((3.16*pow(10,-11)) * abs(currentTimeInMillis - doc['created'].date.getMillis()) + 0.05)) + 1.0)";
         String scriptRating = "_score * doc['score'].value";
 
@@ -43,7 +44,7 @@ public class ElasticSearchDao implements SearchDao {
         params.put("currentTimeInMillis", System.currentTimeMillis());
 
         FunctionScoreQueryBuilder functionScoreQueryBuilder =
-                functionScoreQuery(QueryBuilders.commonTermsQuery("title", query)
+                functionScoreQuery(QueryBuilders.commonTermsQuery("title", request.getQuery())
                         .cutoffFrequency(0.2f).highFreqOperator(AND)
                         .highFreqMinimumShouldMatch("20%")
                         .lowFreqMinimumShouldMatch("3<80%"))
@@ -56,7 +57,7 @@ public class ElasticSearchDao implements SearchDao {
 
         SearchQuery searchQuery = new NativeSearchQueryBuilder()
                 .withQuery(functionScoreQueryBuilder)
-                .withPageable(new PageRequest(pageNo, 10))
+                .withPageable(new PageRequest(request.getPageNo(), 10))
                 .withSort(scoreSort())
                 .withFilter(rangeFilter("score").gt(10))
                 .withIndices(indexName)
