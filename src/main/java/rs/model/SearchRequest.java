@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.ToString;
 
+import java.util.Collection;
+
 @AllArgsConstructor
 @Builder
 @Getter
@@ -16,4 +18,5 @@ public class SearchRequest {
     @NonNull
     private String query;
     private Integer pageNo = 0;
+    private Collection<String> topics;
 }
