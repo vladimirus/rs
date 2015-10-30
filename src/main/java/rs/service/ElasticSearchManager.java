@@ -18,11 +18,12 @@ import java.util.stream.Collectors;
 public class ElasticSearchManager implements SearchManager {
     @Autowired
     private SearchDao searchDao;
+    @Autowired
+    private QueryParser queryParser;
 
     @Override
     public SearchResponse search(String query, Integer pageNo) {
-        return searchDao.search(SearchRequest.builder()
-                .query(query)
+        return searchDao.search(queryParser.parse(query)
                 .pageNo(pageNo)
                 .build());
     }
@@ -38,9 +39,9 @@ public class ElasticSearchManager implements SearchManager {
             if (twoLastChars.startsWith(" ")) {
                 return SuggestResponse.builder().suggestions(searchDao.search(
                         SearchRequest.builder()
-                        .query(query.substring(0, query.length() - 1))
-                        .pageNo(0)
-                        .build()).getLinks().stream()
+                                .query(query.substring(0, query.length() - 1))
+                                .pageNo(0)
+                                .build()).getLinks().stream()
                         .limit(4)
                         .map(Link::getTitle)
                         .collect(toList())).build();

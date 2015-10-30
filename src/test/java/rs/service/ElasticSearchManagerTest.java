@@ -24,15 +24,20 @@ public class ElasticSearchManagerTest {
     private ElasticSearchManager elasticSearchManager;
     @Mock
     private SearchDao searchDao;
+    @Mock
+    private QueryParser queryParser;
 
     @Test
     public void shouldSearch() {
+        // given
+        given(queryParser.parse("test")).willReturn(SearchRequest.builder().query("test"));
 
         // when
         SearchResponse actual = elasticSearchManager.search("test", 0);
 
         // then
         verify(searchDao).search(any(SearchRequest.class));
+        verify(queryParser).parse("test");
     }
 
     @Test
