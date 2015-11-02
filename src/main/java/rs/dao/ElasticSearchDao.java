@@ -16,9 +16,9 @@ import org.elasticsearch.search.suggest.completion.CompletionSuggestion;
 import org.elasticsearch.search.suggest.completion.CompletionSuggestionBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
+import org.springframework.data.elasticsearch.core.facet.request.TermFacetRequestBuilder;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Repository;
 import rs.model.Link;
@@ -32,9 +32,10 @@ import java.util.Map;
 public class ElasticSearchDao implements SearchDao {
     @Value("${rs.index.name:rs}")
     String indexName;
-
     @Autowired
     private ElasticsearchTemplate elasticsearchTemplate;
+    @Autowired
+    private PageConverter pageConverter;
 
     @Override
     public SearchResponse search(SearchRequest request) {
@@ -60,7 +61,11 @@ public class ElasticSearchDao implements SearchDao {
                 .withQuery(functionScoreQueryBuilder)
                 .withPageable(new PageRequest(request.getPageNo(), 10))
                 .withSort(scoreSort())
-                .withIndices(indexName);
+                .withIndices(indexName)
+                .withFacet(new TermFacetRequestBuilder("topics").applyQueryFilter().fields("topic").size(5).build())
+//                .withFacet(new TermFacetRequestBuilder("authors").applyQueryFilter().fields("author").size(5).build())
+//                .withFacet(new TermFacetRequestBuilder("commenters").applyQueryFilter().fields("comments.author").excludeTerms("deleted").size(5).build())
+                ;
 
         if (request.getTopics() != null && !request.getTopics().isEmpty()) {
 
@@ -72,12 +77,7 @@ public class ElasticSearchDao implements SearchDao {
             searchQuery.withFilter(filter);
         }
 
-        Page<Link> page = elasticsearchTemplate.queryForPage(searchQuery.build(), Link.class);
-        return SearchResponse.builder().links(page.getContent())
-                .totalElements(page.getTotalElements())
-                .currentPage(page.getNumber())
-                .totalPages(page.getTotalPages())
-                .build();
+        return pageConverter.convert(elasticsearchTemplate.queryForPage(searchQuery.build(), Link.class));
     }
 
     @Override

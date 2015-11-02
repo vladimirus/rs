@@ -30,7 +30,7 @@ public class QueryParserTest {
     public void shouldParseKey() {
 
         // when
-        SearchRequest actual = queryParser.parse("test one \"two three\" subreddit:funny, lol, something four").build();
+        SearchRequest actual = queryParser.parse("test one \"two three\" subreddit:lol, funny, lol, something four").build();
 
         // then
         assertThat(actual.getQuery(), is("test one \"two three\" four"));
