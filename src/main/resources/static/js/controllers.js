@@ -1,4 +1,4 @@
-function SearchController($scope, $stateParams, Search, Suggest, $location) {
+function SearchController($scope, $stateParams, Search, Suggest, Query, $location) {
     $scope.appName = "reddit searcher";
 
     if (!$scope.query) {
@@ -9,6 +9,7 @@ function SearchController($scope, $stateParams, Search, Suggest, $location) {
         parseResponse(executeSearch($scope.query, $location.search().p || 1), $scope);
     }
 
+    $scope.focusInput = true;
     $scope.submit = function () {
         if ($scope.query) {
             parseResponse(executeSearch($scope.query, 1), $scope);
@@ -24,6 +25,17 @@ function SearchController($scope, $stateParams, Search, Suggest, $location) {
             return data;
         });
     };
+
+    $scope.filterTopic = function (topic) {
+        var apendedQuery = $scope.query + " subreddit: " + topic;
+        Query.get({query: apendedQuery}).$promise.then(function(data) {
+            $scope.query = data.query;
+            $scope.focusInput = true;
+        });
+    };
+
+
+
 
     function parseResponse(reponse, $scope) {
         reponse.$promise.then(function(data) {

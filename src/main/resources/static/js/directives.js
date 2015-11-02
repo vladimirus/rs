@@ -13,6 +13,21 @@ function topComment(Comment) {
     };
 }
 
+function focusMe() {
+    return {
+        scope: { trigger: '=focusMe' },
+        link: function(scope, element) {
+            scope.$watch('trigger', function(value) {
+                if(value === true) {
+                    element[0].focus();
+                    scope.trigger = false;
+                }
+            });
+        }
+    };
+};
+
 angular
     .module('rs')
+    .directive('focusMe', focusMe)
     .directive('topComment', topComment);

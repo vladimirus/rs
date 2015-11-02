@@ -15,7 +15,8 @@
                            placeholder="search"
                            typeahead="suggest for suggest in getSuggestions($viewValue)"
                            typeahead-select-on-exact="true"
-                           typeahead-focus-first="false" />
+                           typeahead-focus-first="false"
+                           focus-me="focusInput" />
 
 				      <span class="input-group-btn">
 				        <button class="btn btn-info" type="submit">
@@ -29,7 +30,7 @@
     <div class="row">
         <div class="col-xs-10 col-md-12 spacer">
             <span class="topic" ng-repeat="topic in topics">
-                <button class="btn btn-default btn-xs" type="submit">{{topic.term}}</button>
+                <button class="btn btn-default btn-xs" type="button" ng-click="filterTopic(topic.term)">{{topic.term}}</button>
             </span>
         </div>
     </div>

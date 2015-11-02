@@ -5,6 +5,7 @@ function SearchFactory($resource) {
     });
 }
 
+
 function CommentFactory($resource) {
     return $resource('/api/comments/linkid/:query', {
         get: '@query'
@@ -17,9 +18,15 @@ function SuggestFactory($resource) {
     });
 }
 
+function QueryFactory($resource) {
+    return $resource('/api/query/:query', {
+        get: '@query'
+    });
+}
 
 angular
     .module('rs')
     .factory('Search', SearchFactory)
     .factory('Comment', CommentFactory)
-    .factory('Suggest', SuggestFactory);
+    .factory('Suggest', SuggestFactory)
+    .factory('Query', QueryFactory);
