@@ -34,6 +34,8 @@ function SearchController($scope, $stateParams, Search, Suggest, $location) {
 
             $scope.totalItems = data.totalElements;
             $scope.currentPage = data.currentPage + 1;
+
+            $scope.topics = data.topics;
         });
     }
 

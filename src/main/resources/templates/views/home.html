@@ -26,6 +26,13 @@
             </form>
         </div>
     </div>
+    <div class="row">
+        <div class="col-xs-10 col-md-12 spacer">
+            <span class="topic" ng-repeat="topic in topics">
+                <button class="btn btn-default btn-xs" type="submit">{{topic.term}}</button>
+            </span>
+        </div>
+    </div>
     <div class="row" ng-repeat="link in links" ng-class="{spacer: $first}">
         <div class="col-xs-10 col-md-12">
             <div class="link">
