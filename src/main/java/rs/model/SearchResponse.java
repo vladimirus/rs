@@ -18,4 +18,5 @@ public class SearchResponse {
     private Integer currentPage;
     private Integer totalPages;
     private Collection<Link> links;
+    private Collection<Facet> topics;
 }

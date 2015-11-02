@@ -33,6 +33,7 @@ public class PageConverterTest {
         verify(page).getTotalElements();
         verify(page).getNumber();
         verify(page).getTotalPages();
+        verify(page).getFacets();
     }
 
 }
