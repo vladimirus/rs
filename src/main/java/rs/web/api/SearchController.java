@@ -17,7 +17,9 @@ public class SearchController {
 
     @RequestMapping(value = "/{query}", method = RequestMethod.GET)
     public SearchResponse search(@PathVariable("query") String query,
-                                   @RequestParam(value="p", defaultValue="1") Integer pageNumber) {
-        return searchManager.search(query, pageNumber - 1);
+                                 @RequestParam(value="p", defaultValue="1") Integer pageNumber,
+                                 @RequestParam(value="t", defaultValue="web") String type
+    ) {
+        return searchManager.search(query, pageNumber - 1, type.toLowerCase());
     }
 }

@@ -22,9 +22,10 @@ public class ElasticSearchManager implements SearchManager {
     private QueryParser queryParser;
 
     @Override
-    public SearchResponse search(String query, Integer pageNo) {
+    public SearchResponse search(String query, Integer pageNo, String type) {
         return searchDao.search(queryParser.parse(query)
                 .pageNo(pageNo)
+                .type(type)
                 .build());
     }
 

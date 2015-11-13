@@ -1,7 +1,9 @@
 package rs.dao;
 
 import static java.util.stream.Collectors.toList;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
 import static org.elasticsearch.index.query.CommonTermsQueryBuilder.Operator.AND;
+import static org.elasticsearch.index.query.FilterBuilders.andFilter;
 import static org.elasticsearch.index.query.FilterBuilders.orFilter;
 import static org.elasticsearch.index.query.FilterBuilders.termFilter;
 import static org.elasticsearch.index.query.QueryBuilders.functionScoreQuery;
@@ -67,17 +69,33 @@ public class ElasticSearchDao implements SearchDao {
 //                .withFacet(new TermFacetRequestBuilder("commenters").applyQueryFilter().fields("comments.author").excludeTerms("deleted").size(5).build())
                 ;
 
+        FilterBuilder filter = null;
         if (request.getTopics() != null && !request.getTopics().isEmpty()) {
 
             FilterBuilder[] filters = request.getTopics().stream()
                     .map(text -> termFilter("topic", text))
                     .collect(toList()).toArray(new FilterBuilder[request.getTopics().size()]);
 
-            FilterBuilder filter = orFilter(filters);
+            filter = addFilter(filter, orFilter(filters));
+        }
+
+        if (isNotBlank(request.getType()) && request.getType().equals("images")) {
+            filter = addFilter(filter, termFilter("domain", "i.imgur.com"));
+        }
+
+        if (filter != null) {
             searchQuery.withFilter(filter);
         }
 
         return pageConverter.convert(elasticsearchTemplate.queryForPage(searchQuery.build(), Link.class));
+    }
+
+    private FilterBuilder addFilter(FilterBuilder filter, FilterBuilder topicFilter) {
+        if (filter != null) {
+            return andFilter(filter, topicFilter);
+        } else {
+            return topicFilter;
+        }
     }
 
     @Override

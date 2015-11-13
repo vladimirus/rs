@@ -19,4 +19,5 @@ public class SearchRequest {
     private String query;
     private Integer pageNo = 0;
     private Collection<String> topics;
+    private String type;
 }

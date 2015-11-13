@@ -30,13 +30,13 @@ public class SearchControllerTest {
         // given
         Link link = aLink("id");
         SearchResponse response = SearchResponse.builder().totalPages(1).links(singletonList(link)).build();
-        given(searchManager.search("test", 0)).willReturn(response);
+        given(searchManager.search("test", 0, "web")).willReturn(response);
 
         // when
-        SearchResponse actual = searchController.search("test", 1);
+        SearchResponse actual = searchController.search("test", 1, "web");
 
         // then
         assertThat(actual.getLinks(), hasSize(1));
-        verify(searchManager).search(anyString(), eq(0));
+        verify(searchManager).search(anyString(), eq(0), eq("web"));
     }
 }

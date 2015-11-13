@@ -33,7 +33,7 @@ public class ElasticSearchManagerTest {
         given(queryParser.parse("test")).willReturn(SearchRequest.builder().query("test"));
 
         // when
-        SearchResponse actual = elasticSearchManager.search("test", 0);
+        SearchResponse actual = elasticSearchManager.search("test", 0, "web");
 
         // then
         verify(searchDao).search(any(SearchRequest.class));

@@ -34,16 +34,35 @@
             </span>
         </div>
     </div>
-    <div class="row" ng-repeat="link in links" ng-class="{spacer: $first}">
-        <div class="col-xs-10 col-md-12">
-            <div class="link">
-                <p class="title"><a href="{{link.url}}">{{link.title}}</a></p>
-                <p class="url hidden-xs">{{link.url}}</p>
-                <p class="url visible-xs">{{link.shortUrl}}</p>
-                <p class="comment"><a href="http://reddit.com{{link.commentsUrl}}">{{link.topComment}}</a></p>
-            </div>
+
+    <div class="row">
+        <div class="col-xs-10 col-md-12 spacer">
+        <uib-tabset>
+            <uib-tab heading="{{tabs[0].heading}}" active="tabs[0].active" select="pageTypeChanged(tabs[0].id)">
+                <div class="row" ng-repeat="link in links" ng-class="{spacer: $first}">
+                    <div class="col-xs-10 col-md-12">
+                        <div class="link">
+                            <p class="title"><a href="{{link.url}}">{{link.title}}</a></p>
+                            <p class="url hidden-xs">{{link.url}}</p>
+                            <p class="url visible-xs">{{link.shortUrl}}</p>
+                            <p class="comment"><a href="http://reddit.com{{link.commentsUrl}}">{{link.topComment}}</a></p>
+                        </div>
+                    </div>
+                </div>
+            </uib-tab>
+            <uib-tab heading="{{tabs[1].heading}}" active="tabs[1].active" select="pageTypeChanged(tabs[1].id)">
+                <div class="row" ng-repeat="link in links" ng-class="{spacer: $first}">
+                    <div class="col-xs-10 col-md-12">
+                        <div class="link">
+                            <p class="title"><a href="{{link.url}}">{{link.title}}</a></p>
+                        </div>
+                    </div>
+                </div>
+            </uib-tab>
+        </uib-tabset>
         </div>
     </div>
+
     <div class="row" ng-show="totalItems > 10">
         <div class="col-xs-10 col-md-12">
             <pagination total-items="totalItems"
@@ -56,4 +75,5 @@
             </pagination>
         </div>
     </div>
+
 </div>
