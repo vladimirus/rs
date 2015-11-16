@@ -18,7 +18,7 @@ public class QueryController {
 
     @RequestMapping(value = "/{query}", method = GET)
     public UiQuery parse(@PathVariable("query") String query) {
-        SearchRequest request = queryParser.parse(query).build();
+        SearchRequest request = queryParser.parse(query).type("web").build();
 
         StringBuilder builder = new StringBuilder();
         builder.append(request.getQuery());

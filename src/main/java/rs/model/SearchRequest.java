@@ -17,7 +17,8 @@ import java.util.Collection;
 public class SearchRequest {
     @NonNull
     private String query;
+    @NonNull
+    private String type;
     private Integer pageNo = 0;
     private Collection<String> topics;
-    private String type;
 }

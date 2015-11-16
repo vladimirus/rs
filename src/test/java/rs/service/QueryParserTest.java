@@ -20,7 +20,7 @@ public class QueryParserTest {
     public void shouldParse() {
 
         // when
-        SearchRequest actual = queryParser.parse("test").build();
+        SearchRequest actual = queryParser.parse("test").type("web").build();
 
         // then
         assertThat(actual.getQuery(), is("test"));
@@ -30,7 +30,7 @@ public class QueryParserTest {
     public void shouldParseKey() {
 
         // when
-        SearchRequest actual = queryParser.parse("test one \"two three\" subreddit:lol, funny, lol, something four").build();
+        SearchRequest actual = queryParser.parse("test one \"two three\" subreddit:lol, funny, lol, something four").type("web").build();
 
         // then
         assertThat(actual.getQuery(), is("test one \"two three\" four"));
@@ -42,7 +42,7 @@ public class QueryParserTest {
     public void shouldParseEmptyKey() {
 
         // when
-        SearchRequest actual = queryParser.parse("test one subreddit: ").build();
+        SearchRequest actual = queryParser.parse("test one subreddit: ").type("web").build();
 
         // then
         assertThat(actual.getQuery(), is("test one"));

@@ -24,7 +24,7 @@ public class QueryControllerTest {
     @Test
     public void shouldParse()  {
         // given
-        given(queryParser.parse("test")).willReturn(SearchRequest.builder().query("test").topics(asList("one", "two")));
+        given(queryParser.parse("test")).willReturn(SearchRequest.builder().type("web").query("test").topics(asList("one", "two")));
 
         // when
         UiQuery actual = queryController.parse("test");
