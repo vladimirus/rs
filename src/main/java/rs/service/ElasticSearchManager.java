@@ -1,5 +1,6 @@
 package rs.service;
 
+import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toList;
 
 import org.elasticsearch.common.base.Splitter;
@@ -25,7 +26,7 @@ public class ElasticSearchManager implements SearchManager {
     public SearchResponse search(String query, Integer pageNo, String type) {
         return searchDao.search(queryParser.parse(query)
                 .pageNo(pageNo)
-                .type(type)
+                .type(ofNullable(type).orElse("web"))
                 .build());
     }
 

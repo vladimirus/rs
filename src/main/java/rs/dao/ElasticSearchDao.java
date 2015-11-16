@@ -1,7 +1,6 @@
 package rs.dao;
 
 import static java.util.stream.Collectors.toList;
-import static org.apache.commons.lang.StringUtils.isNotBlank;
 import static org.elasticsearch.index.query.CommonTermsQueryBuilder.Operator.AND;
 import static org.elasticsearch.index.query.FilterBuilders.andFilter;
 import static org.elasticsearch.index.query.FilterBuilders.orFilter;
@@ -59,9 +58,14 @@ public class ElasticSearchDao implements SearchDao {
 //                        .add(scriptFunction(scriptRecency, params))
 //                        .add(scriptFunction(scriptRating));
 
+        int pageSize = 10;
+        if (request.getType().equals("images")) {
+            pageSize = 50;
+        }
+
         NativeSearchQueryBuilder searchQuery = new NativeSearchQueryBuilder()
                 .withQuery(functionScoreQueryBuilder)
-                .withPageable(new PageRequest(request.getPageNo(), 10))
+                .withPageable(new PageRequest(request.getPageNo(), pageSize))
                 .withSort(scoreSort())
                 .withIndices(indexName)
                 .withFacet(new TermFacetRequestBuilder("topics").applyQueryFilter().fields("topic").size(5).build())
@@ -76,7 +80,7 @@ public class ElasticSearchDao implements SearchDao {
             searchQuery.withFilter(filter);
         }
 
-        return pageConverter.convert(elasticsearchTemplate.queryForPage(searchQuery.build(), Link.class), 10);
+        return pageConverter.convert(elasticsearchTemplate.queryForPage(searchQuery.build(), Link.class), pageSize);
     }
 
     private FilterBuilder createFilters(SearchRequest request) {
@@ -90,7 +94,7 @@ public class ElasticSearchDao implements SearchDao {
             filter = addFilter(filter, orFilter(filters));
         }
 
-        if (isNotBlank(request.getType()) && request.getType().equals("images")) {
+        if (request.getType().equals("images")) {
             filter = addFilter(filter, termFilter("domain", "i.imgur.com"));
         }
         return filter;
