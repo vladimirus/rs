@@ -69,6 +69,17 @@ public class ElasticSearchDao implements SearchDao {
 //                .withFacet(new TermFacetRequestBuilder("commenters").applyQueryFilter().fields("comments.author").excludeTerms("deleted").size(5).build())
                 ;
 
+
+        FilterBuilder filter = createFilters(request);
+
+        if (filter != null) {
+            searchQuery.withFilter(filter);
+        }
+
+        return pageConverter.convert(elasticsearchTemplate.queryForPage(searchQuery.build(), Link.class), 10);
+    }
+
+    private FilterBuilder createFilters(SearchRequest request) {
         FilterBuilder filter = null;
         if (request.getTopics() != null && !request.getTopics().isEmpty()) {
 
@@ -82,19 +93,14 @@ public class ElasticSearchDao implements SearchDao {
         if (isNotBlank(request.getType()) && request.getType().equals("images")) {
             filter = addFilter(filter, termFilter("domain", "i.imgur.com"));
         }
-
-        if (filter != null) {
-            searchQuery.withFilter(filter);
-        }
-
-        return pageConverter.convert(elasticsearchTemplate.queryForPage(searchQuery.build(), Link.class));
+        return filter;
     }
 
-    private FilterBuilder addFilter(FilterBuilder filter, FilterBuilder topicFilter) {
+    private FilterBuilder addFilter(FilterBuilder filter, FilterBuilder toAdd) {
         if (filter != null) {
-            return andFilter(filter, topicFilter);
+            return andFilter(filter, toAdd);
         } else {
-            return topicFilter;
+            return toAdd;
         }
     }
 

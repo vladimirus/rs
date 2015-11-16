@@ -13,8 +13,14 @@ public class TestFactory {
     }
 
     public static Link aLink(String id) {
-        return Link.builder()
+        return aLinkBuilder()
                 .id(id)
+                .build();
+    }
+
+    public static Link.LinkBuilder aLinkBuilder() {
+        return Link.builder()
+                .id("id")
                 .title("title")
                 .url("http://url")
                 .commentsUrl("http://comments")
@@ -26,8 +32,7 @@ public class TestFactory {
                 .created(new Date())
                 .self(false)
                 .nsfw(false)
-                .hidden(false)
-                .build();
+                .hidden(false);
     }
 
     public static Topic aTopic(String id) {

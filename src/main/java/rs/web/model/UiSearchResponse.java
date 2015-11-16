@@ -1,10 +1,11 @@
-package rs.model;
+package rs.web.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
+import rs.model.Facet;
 
 import java.util.Collection;
 
@@ -13,11 +14,11 @@ import java.util.Collection;
 @Getter
 @ToString
 @EqualsAndHashCode
-public class SearchResponse {
+public class UiSearchResponse {
     private Long totalElements;
     private Integer currentPage;
     private Integer totalPages;
     private Integer elementsPerPage;
-    private Collection<Link> links;
+    private Collection<UiLink> links;
     private Collection<Facet> topics;
 }

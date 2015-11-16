@@ -57,34 +57,16 @@ function SearchController($scope, $stateParams, Search, Suggest, Query, $locatio
 
     function parseResponse(reponse, $scope) {
         reponse.$promise.then(function(data) {
-            $scope.links = getLinks(data);
+            $scope.links = data.links;
 
             $scope.maxSize = 5;
-            $scope.itemsPerPage = 10;
+            $scope.itemsPerPage = data.elementsPerPage;
 
             $scope.totalItems = data.totalElements;
             $scope.currentPage = data.currentPage + 1;
 
             $scope.topics = data.topics;
         });
-    }
-
-    function getLinks(data) {
-        var links = data.links;
-        for (i = 0; i < links.length; i++) {
-            if (links[i].url.length > 33) {
-                links[i].shortUrl = links[i].url.substring(0, 30) + "...";
-            } else {
-                links[i].shortUrl = links[i].url;
-            }
-
-            if (typeof links[i].comments !== 'undefined' && links[i].comments !== null && links[i].comments.length > 0) {
-                links[i].topComment = links[i].comments[0].body;
-            } else {
-                links[i].topComment = "comments";
-            }
-        }
-        return links;
     }
 
     function executeSearch(query, pageNo, type) {

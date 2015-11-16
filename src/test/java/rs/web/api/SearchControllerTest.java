@@ -17,6 +17,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 import rs.model.Link;
 import rs.model.SearchResponse;
 import rs.service.SearchManager;
+import rs.web.converter.SearchConverter;
+import rs.web.model.UiLink;
+import rs.web.model.UiSearchResponse;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SearchControllerTest {
@@ -24,16 +27,21 @@ public class SearchControllerTest {
     private SearchController searchController;
     @Mock
     private SearchManager searchManager;
+    @Mock
+    private SearchConverter searchConverter;
 
     @Test
     public void shouldSearch()  {
         // given
         Link link = aLink("id");
+        UiLink uiLink = UiLink.builder().url("").displayedUrl("").commentsUrl("").description("").title("").build();
         SearchResponse response = SearchResponse.builder().totalPages(1).links(singletonList(link)).build();
+        UiSearchResponse uiResponse = UiSearchResponse.builder().totalPages(1).links(singletonList(uiLink)).build();
         given(searchManager.search("test", 0, "web")).willReturn(response);
+        given(searchConverter.convert(response)).willReturn(uiResponse);
 
         // when
-        SearchResponse actual = searchController.search("test", 1, "web");
+        UiSearchResponse actual = searchController.search("test", 1, "web");
 
         // then
         assertThat(actual.getLinks(), hasSize(1));

@@ -44,17 +44,21 @@
                         <div class="link">
                             <p class="title"><a href="{{link.url}}">{{link.title}}</a></p>
                             <p class="url hidden-xs">{{link.url}}</p>
-                            <p class="url visible-xs">{{link.shortUrl}}</p>
-                            <p class="comment"><a href="http://reddit.com{{link.commentsUrl}}">{{link.topComment}}</a></p>
+                            <p class="url visible-xs">{{link.displayUrl}}</p>
+                            <p class="comment"><a href="http://reddit.com{{link.commentsUrl}}">{{link.description}}</a></p>
                         </div>
                     </div>
                 </div>
             </uib-tab>
             <uib-tab heading="{{tabs[1].heading}}" active="tabs[1].active" select="pageTypeChanged(tabs[1].id)">
-                <div class="row" ng-repeat="link in links" ng-class="{spacer: $first}">
-                    <div class="col-xs-10 col-md-12">
-                        <div class="link">
-                            <p class="title"><a href="{{link.url}}">{{link.title}}</a></p>
+                <div class="spacer">
+                    <div class="row">
+                        <div class="col-xs-2 col-md-3" ng-repeat="link in links">
+                            <div class="link">
+                                <p class="title" ng-show="link.imageUrl">
+                                    <a href="{{link.url}}"><img src="{{link.imageUrl}}" alt="{{link.title}}" class="img-thumbnail" /></a>
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>

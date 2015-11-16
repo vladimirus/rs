@@ -25,7 +25,7 @@ public class PageConverterTest {
         FacetedPage<Link> page = Mockito.mock(FacetedPage.class);
 
         // when
-        SearchResponse actual = pageConverter.convert(page);
+        SearchResponse actual = pageConverter.convert(page, 10);
 
         // then
         assertThat(actual, is(notNullValue()));

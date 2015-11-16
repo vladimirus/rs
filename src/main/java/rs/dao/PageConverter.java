@@ -18,11 +18,12 @@ import java.util.List;
 @Component
 public class PageConverter {
 
-    public SearchResponse convert(FacetedPage<Link> page) {
+    public SearchResponse convert(FacetedPage<Link> page, Integer elementsPerPage) {
         return SearchResponse.builder().links(page.getContent())
                 .totalElements(page.getTotalElements())
                 .currentPage(page.getNumber())
                 .totalPages(page.getTotalPages())
+                .elementsPerPage(elementsPerPage)
                 .topics(facets(page.getFacets(), "topics"))
                 .build();
     }

@@ -5,6 +5,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.verify;
 
@@ -34,7 +35,7 @@ public class ElasticSearchDaoTest {
         // given
         FacetedPage page = Mockito.mock(FacetedPage.class);
         given(elasticsearchTemplate.queryForPage(isA(SearchQuery.class), any())).willReturn(page);
-        given(pageConverter.convert(page)).willReturn(SearchResponse.builder().build());
+        given(pageConverter.convert(page, 10)).willReturn(SearchResponse.builder().build());
         SearchRequest request = SearchRequest.builder().query("test").pageNo(0).build();
 
         // when
@@ -43,6 +44,6 @@ public class ElasticSearchDaoTest {
         // then
         assertThat(actual, is(notNullValue()));
         verify(elasticsearchTemplate).queryForPage(isA(SearchQuery.class), any());
-        verify(pageConverter).convert(isA(FacetedPage.class));
+        verify(pageConverter).convert(isA(FacetedPage.class), anyInt());
     }
 }
