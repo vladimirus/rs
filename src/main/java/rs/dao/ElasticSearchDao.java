@@ -95,7 +95,9 @@ public class ElasticSearchDao implements SearchDao {
         }
 
         if (request.getType().equals("images")) {
-            filter = addFilter(filter, termFilter("domain", "i.imgur.com"));
+            filter = addFilter(filter, orFilter(
+                    termFilter("domain", "i.imgur.com"),
+                    termFilter("domain", "imgur.com")));
         }
         return filter;
     }
