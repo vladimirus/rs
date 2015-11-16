@@ -36,7 +36,7 @@ public class ElasticSearchDaoTest {
         FacetedPage page = Mockito.mock(FacetedPage.class);
         given(elasticsearchTemplate.queryForPage(isA(SearchQuery.class), any())).willReturn(page);
         given(pageConverter.convert(page, 10)).willReturn(SearchResponse.builder().build());
-        SearchRequest request = SearchRequest.builder().query("test").pageNo(0).build();
+        SearchRequest request = SearchRequest.builder().type("web").query("test").pageNo(0).build();
 
         // when
         SearchResponse actual = elasticSearchDao.search(request);
